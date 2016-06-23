@@ -4,6 +4,7 @@ use strict;
 use warnings;
 
 use Moose;
+use Moose::Util::TypeConstraints;
 use namespace::autoclean;
 
 use Data::Util qw( is_hash_ref is_array_ref );
@@ -12,16 +13,19 @@ with 'Printable', 'HasAccount';
 
 has 'first_name' => (
     is       => 'rw',
+    isa      => 'Str',
     required => 1,
 );
 
 has 'last_name' => (
     is       => 'rw',
+    isa      => 'Str',
     required => 1,
 );
 
 has 'title' => (
     is        => 'rw',
+    isa       => 'Str',
     predicate => 'has_title',
     clearer   => 'clear_title',
 );
