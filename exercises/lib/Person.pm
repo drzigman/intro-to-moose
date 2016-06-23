@@ -9,7 +9,15 @@ use namespace::autoclean;
 
 use Data::Util qw( is_hash_ref is_array_ref );
 
-with 'Printable', 'HasAccount';
+use BankAccount;
+
+with 'Printable';
+
+has 'account' => (
+    is      => 'ro',
+    default => sub { BankAccount->new },
+    handles => [qw( deposit withdraw )],
+);
 
 has 'first_name' => (
     is       => 'rw',
@@ -44,6 +52,14 @@ sub BUILDARGS {
 	}
 
 	return $class->SUPER::BUILDARGS( @_ );
+}
+
+sub BUILD {
+    my $self = shift;
+
+    $self->account->owner( $self );
+
+    return $self;
 }
 
 sub full_name {
