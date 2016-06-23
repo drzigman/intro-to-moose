@@ -55,6 +55,27 @@ sub full_name {
     }
 }
 
+before full_name => sub {
+    push @Person::CALL, 'calling full_name';
+};
+
+around full_name => sub {
+    my $orig = shift;
+    my $self = shift;
+
+    my $full_name = $self->$orig( @_ );
+
+    if( $self->last_name eq 'Wall' ) {
+        return sprintf('*%s*', $full_name);
+    }
+
+    return $full_name;
+};
+
+after full_name => sub {
+    push @Person::CALL, 'called full_name';
+};
+
 sub as_string {
     my $self = shift;
 
