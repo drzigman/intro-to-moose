@@ -11,11 +11,19 @@ use Data::Util qw( is_hash_ref is_array_ref );
 with 'Printable', 'HasAccount';
 
 has 'first_name' => (
-    is => 'rw',
+    is       => 'rw',
+    required => 1,
 );
 
 has 'last_name' => (
-    is => 'rw',
+    is       => 'rw',
+    required => 1,
+);
+
+has 'title' => (
+    is        => 'rw',
+    predicate => 'has_title',
+    clearer   => 'clear_title',
 );
 
 sub BUILDARGS {
@@ -37,7 +45,14 @@ sub BUILDARGS {
 sub full_name {
     my $self = shift;
 
-    return $self->first_name . ' ' . $self->last_name;
+	my $full_name = $self->first_name . ' ' . $self->last_name;
+
+    if( $self->has_title ) {
+		return sprintf("%s (%s)", $full_name, $self->title );
+    }
+    else {
+        return $full_name;
+    }
 }
 
 sub as_string {

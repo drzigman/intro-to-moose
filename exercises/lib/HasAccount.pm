@@ -9,7 +9,8 @@ use namespace::autoclean;
 use Carp;
 
 has 'balance' => (
-    is => 'rw',
+    is      => 'rw',
+    default => 100,
 );
 
 sub deposit {

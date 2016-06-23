@@ -8,23 +8,31 @@ use namespace::autoclean;
 
 extends 'Person';
 
-has 'title' => (
-    is => 'rw',
+has '+title' => (
+    default => 'Worker',
 );
 
 has 'salary' => (
-    is => 'rw',
+    is       => 'ro',
+    lazy     => 1,
+    builder  => '_build_salary',
+    init_arg => undef,
 );
 
 has 'ssn' => (
     is => 'ro',
 );
 
-override full_name => sub {
+has 'salary_level' => (
+    is      => 'rw',
+    default => 1,
+);
+
+sub _build_salary {
     my $self = shift;
 
-    return sprintf("%s (%s)", super(), $self->title );
-};
+    return $self->salary_level * 10000;
+}
 
 __PACKAGE__->meta->make_immutable;
 
