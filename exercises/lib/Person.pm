@@ -8,6 +8,8 @@ use namespace::autoclean;
 
 use Data::Util qw( is_hash_ref is_array_ref );
 
+with 'Printable', 'HasAccount';
+
 has 'first_name' => (
     is => 'rw',
 );
@@ -36,6 +38,12 @@ sub full_name {
     my $self = shift;
 
     return $self->first_name . ' ' . $self->last_name;
+}
+
+sub as_string {
+    my $self = shift;
+
+    return $self->full_name;
 }
 
 __PACKAGE__->meta->make_immutable;
